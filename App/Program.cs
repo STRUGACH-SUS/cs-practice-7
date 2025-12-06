@@ -1,7 +1,7 @@
 ﻿using App;
 
 var cts = new CancellationTokenSource();
-Console.CancelKeyPress += (_, _) => cts.Cancel();
+Console.CancelKeyPress += (_, _) => cts.Cancel();//тут короче нужно как раз сделать при нажатии ctrl + c выход и очистку файла
 
 var uris = InputData.GetUris();
 var dest = InputData.GetOutputFile();
