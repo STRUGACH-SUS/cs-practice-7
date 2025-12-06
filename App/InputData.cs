@@ -6,7 +6,7 @@ namespace App;
 public static class InputData
 {
     /// <summary>
-    /// Считывает от пользователя URL файлов из интернета.
+    /// Считывает от пользователя URL файлов из интернета
     /// </summary>
     public static string[] GetUris()
     {

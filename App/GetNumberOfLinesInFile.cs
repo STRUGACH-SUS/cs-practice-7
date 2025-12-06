@@ -1,6 +1,6 @@
 namespace App;
 /// <summary>
-/// Получаем количество строк в итоговом файле.
+/// Получаем количество строк в итоговом файле
 /// </summary>
 public class GetNumberOfLinesInFile
 {

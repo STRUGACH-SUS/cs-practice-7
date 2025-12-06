@@ -1,6 +1,6 @@
 namespace App;
 /// <summary>
-/// Валидирует ввод пользователя.
+/// Валидирует ввод пользователя
 /// </summary>
 public class Validator
 {
