@@ -16,7 +16,7 @@ public static class Input
         {
             Console.Write("Введите нужные URL через пробел: ");
             result = Console.ReadLine()!.Split(' ');
-            valid = result.Any(x => IsValidUri(x) is false);
+            valid = result.Any(x => IsValidUri(x));
             if (valid is false)
             {
                 Console.WriteLine("Ошибка! Вы ввели некорректные URL!");
