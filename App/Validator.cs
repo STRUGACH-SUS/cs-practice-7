@@ -7,21 +7,21 @@ public class Validator
     /// <summary>
     /// Проверка URL.
     /// </summary>
-    public static bool IsValidUri(string url)
+    public static bool IsValidUri(string uri)//не хватает проверки URI
     {
         try
         {
-            if (url == null)
+            if (uri == null)
             {
-                throw new("Произошла ошибка, URL не может быть пустым.");
+                throw new("Произошла ошибка, URI не может быть пустым.");
             }
-            if (!url.StartsWith("https://"))
+            if (!uri.StartsWith("https://"))
             {
-                throw new("Произошла ошибка, URL должен начинаться с ( https:// ).");
+                throw new("Произошла ошибка, URI должен начинаться с ( https:// ).");
             }
-            if (!url.EndsWith(".txt"))
+            if (!uri.EndsWith(".txt"))
             {
-                throw new("Произошла ошибка, URL должен заканчиваться на ( .txt ).");
+                throw new("Произошла ошибка, URI должен заканчиваться на ( .txt ).");
             }
             return true;
         }
@@ -49,16 +49,7 @@ public class Validator
             }
             if (file.Extension != ".txt")
             {
-                throw new("Произошла ошибка, нужно ввести файл с расщирением (.txt).");
-            }
-            if (file.Exists)
-            {
-                Console.Write("Пeрезаписать файл (да/нет)?  ");
-                string answer = Console.ReadLine().ToLower().Trim();
-                if (answer == "да")
-                {
-                    File.WriteAllText(file.FullName, string.Empty);
-                }
+                throw new("Произошла ошибка, нужно ввести файл с расширением (.txt).");
             }
             return true;
         }
