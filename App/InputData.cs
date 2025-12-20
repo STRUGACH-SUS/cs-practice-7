@@ -1,10 +1,11 @@
 namespace App;
 
 /// <summary>
-/// Считывает ввод пользователя.
+/// Считывает ввод пользователя
 /// </summary>
 public static class InputData
 {
+    
     /// <summary>
     /// Считывает от пользователя URL файлов из интернета
     /// </summary>
@@ -14,10 +15,8 @@ public static class InputData
         var valid = false;
         while (valid is false)
         {
-            Console.Write("Введите нужные URL через пробел (Пример: https://un1ver5e.ru/api/files/o1apoh5j.bdw.txt): ");
             result = Console.ReadLine()!.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             valid = result.Any(x => Validator.IsValidUri(x) is false);// возможен вылет ошибки так как массив может быть пустым
-            
             if (valid is false)
             {
                 break;
@@ -26,16 +25,30 @@ public static class InputData
         return result;
     }
     
-    public static FileInfo GetOutputFile()
+    /// <summary>
+    /// Считывает от пользователя путь до файла в который будет записана информация
+    /// </summary>
+    public static FileInfo GetOutputPathOfFile()
     {
         while (true)
         {
-            Console.Write("""Введите путь до файла с результатом (Пример: C:\Users\htcbe\OneDrive\Рабочий стол\jfdgkdjfhgk.txt ): """);
             var file = new FileInfo(Console.ReadLine()!.Trim());
             if (Validator.IsValidFile(file))
             {
-                return file;    
+                return file;
             }
+        }
+    }
+
+    /// <summary>
+    /// Считывает от пользователя разрешение на перезапись файла
+    /// </summary>
+    public static void OverwritingFile(FileInfo dest)
+    {
+        var answer = Console.ReadLine()!.ToLower().Trim();
+        if (answer is "да")
+        {
+            FraudWithFile.Overwriting(dest);             
         }
     }
 }

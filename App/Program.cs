@@ -1,36 +1,62 @@
-﻿using System.Net;                 
-using App;                       
-// https://un1ver5e.ru/api/files/5hs0j15l.4si.txt
-// C:\Users\stryg\Desktop\Проверочка.txt
+﻿using App;
+
 var cts = new CancellationTokenSource();
-Console.CancelKeyPress += (_, _) => cts.Cancel();//Для чего удалять файл???
 
+InterfaceConsole.WriterMessages("FirstQuestion");
 var uris = InputData.GetUris();
-var dest = InputData.GetOutputFile();
-var http = new HttpClient();
 
-Console.Write("Пeрезаписать файл (да/нет)?  ");
-var answer = Console.ReadLine()!.ToLower().Trim();
-if (answer == "да")
-{
-    File.WriteAllText(dest.FullName, string.Empty);               
-}
+InterfaceConsole.WriterMessages("SecondQuestion");
+var dest = InputData.GetOutputPathOfFile();
+
+var http = new HttpClient();
 
 var destStream = new StreamWriter(dest.FullName, true);
 
-await Parallel.ForEachAsync(uris, cts.Token, async (uri, ct) =>
+Console.CancelKeyPress += (_,_) =>
+{
+    cts.Cancel();
+    InterfaceConsole.WriterMessages("Cancellation");
+    destStream.Close();
+    FraudWithFile.Delete(dest);
+    
+};
+
+InterfaceConsole.WriterMessages("RecordStart");
+
+var tasks = new List<Task>();
+
+var semaphore = new SemaphoreSlim(1, 1);
+
+foreach (var uri in uris)
+{
+    var task = ProcessData(uri, cts.Token);
+    tasks.Add(task);
+}
+await Task.WhenAll(tasks);
+
+async Task ProcessData(string uri, CancellationToken ct)
 {
     try
-    {//нужно использовать синхронизацию потоков или lock, чтобы не перемешалось содержимое
+    {
         await using var content = await http.GetStreamAsync(uri, ct);
-        await content.CopyToAsync(destStream.BaseStream, ct);//Тут короче он копирует данные вначало а не записывает их в конец
+        await semaphore.WaitAsync(ct);
+        try
+        {
+            await content.CopyToAsync(destStream.BaseStream, ct);
+        }
+        finally
+        {
+            semaphore.Release();
+        }
     }
     catch
     {
-        
+        InterfaceConsole.WriterMessages("Error");
+        throw;
     }
-});
-
+}
 await destStream.DisposeAsync();
+
+InterfaceConsole.WriterMessages("RecordEnd");
 
 GetNumberOfLinesInFile.GetNumberOfLines(dest);

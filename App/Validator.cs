@@ -5,57 +5,62 @@ namespace App;
 public class Validator
 {
     /// <summary>
-    /// Проверка URL.
+    /// Проверка URI
     /// </summary>
     public static bool IsValidUri(string uri)//не хватает проверки URI
     {
         try
         {
-            if (uri == null)
+            if (uri is null)
             {
-                throw new("Произошла ошибка, URI не может быть пустым.");
+                throw new Exception("ErrorInURI_1");
             }
             if (!uri.StartsWith("https://"))
             {
-                throw new("Произошла ошибка, URI должен начинаться с ( https:// ).");
+                throw new Exception("ErrorInURI_2");
             }
-            if (!uri.EndsWith(".txt"))
+            if (!Uri.TryCreate(uri, UriKind.Absolute, out _))
             {
-                throw new("Произошла ошибка, URI должен заканчиваться на ( .txt ).");
+                throw new Exception("ErrorInURI_3");
             }
             return true;
         }
         catch(Exception e)
         {
-            Console.WriteLine(e.Message + " Попробуйте ещё раз.");
+            InterfaceConsole.WriterMessages(e.Message);
             return false;
         }
     }
     
     /// <summary>
-    /// Проверка пути до файла.
+    /// Проверка пути до файла
     /// </summary>
     public static bool IsValidFile(FileInfo file)
     {
         try
         {
-            if (file == null)
+            if (file is null)
             {
-                throw new("Произошла ошибка, путь к фалу не может быть пустым.");
+                throw new Exception("ErrorInPathOfFile_1");
+            }
+            if (!Path.Exists(file.DirectoryName))
+            {
+                throw new Exception("ErrorInPathOfFile_4");
             }
             if (!file.Exists)
             {
-                throw new("Произошла ошибка, файла по указанному пути не существует.");
+                FraudWithFile.Create(file);
             }
-            if (file.Extension != ".txt")
+            else
             {
-                throw new("Произошла ошибка, нужно ввести файл с расширением (.txt).");
+                InterfaceConsole.WriterMessages("ThirdQuestion");
+                InputData.OverwritingFile(file);
             }
             return true;
         }
         catch(Exception e)
         {
-            Console.WriteLine(e.Message + " Попробуйте ещё раз.");
+            InterfaceConsole.WriterMessages(e.Message);
             return false;
         }
     }
