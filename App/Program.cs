@@ -2,10 +2,10 @@
 
 var cts = new CancellationTokenSource();
 
-InterfaceConsole.WriterMessages("FirstQuestion");
+InterfaceConsole.WriteMessages(InterfaceConsole.FirstQuestion);
 var uris = InputData.GetUris();
 
-InterfaceConsole.WriterMessages("SecondQuestion");
+InterfaceConsole.WriteMessages(InterfaceConsole.SecondQuestion);
 var dest = InputData.GetOutputPathOfFile();
 
 var http = new HttpClient();
@@ -15,13 +15,13 @@ var destStream = new StreamWriter(dest.FullName, true);
 Console.CancelKeyPress += (_,_) =>
 {
     cts.Cancel();
-    InterfaceConsole.WriterMessages("Cancellation");
+    InterfaceConsole.WriteMessages(InterfaceConsole.Cancellation);
     destStream.Close();
     FraudWithFile.Delete(dest);
     
 };
 
-InterfaceConsole.WriterMessages("RecordStart");
+InterfaceConsole.WriteMessages(InterfaceConsole.RecordStart);
 
 var tasks = new List<Task>();
 
@@ -51,12 +51,12 @@ async Task ProcessData(string uri, CancellationToken ct)
     }
     catch
     {
-        InterfaceConsole.WriterMessages("Error");
+        InterfaceConsole.WriteMessages(InterfaceConsole.Error);
         throw;
     }
 }
 await destStream.DisposeAsync();
 
-InterfaceConsole.WriterMessages("RecordEnd");
+InterfaceConsole.WriteMessages(InterfaceConsole.RecordEnd);
 
 GetNumberOfLinesInFile.GetNumberOfLines(dest);

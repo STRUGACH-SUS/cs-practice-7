@@ -48,7 +48,7 @@ public static class InputData
         var answer = Console.ReadLine()!.ToLower().Trim();
         if (answer is "да")
         {
-            FraudWithFile.Overwriting(dest);             
+            FraudWithFile.Overwrite(dest);             
         }
     }
 }

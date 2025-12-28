@@ -13,21 +13,21 @@ public class Validator
         {
             if (uri is null)
             {
-                throw new Exception("ErrorInURI_1");
+                throw new Exception(InterfaceConsole.ErrorInUri1);
             }
             if (!uri.StartsWith("https://"))
             {
-                throw new Exception("ErrorInURI_2");
+                throw new Exception(InterfaceConsole.ErrorInUri2);
             }
             if (!Uri.TryCreate(uri, UriKind.Absolute, out _))
             {
-                throw new Exception("ErrorInURI_3");
+                throw new Exception(InterfaceConsole.ErrorInUri3);
             }
             return true;
         }
         catch(Exception e)
         {
-            InterfaceConsole.WriterMessages(e.Message);
+            InterfaceConsole.WriteMessages(e.Message);
             return false;
         }
     }
@@ -41,11 +41,11 @@ public class Validator
         {
             if (file is null)
             {
-                throw new Exception("ErrorInPathOfFile_1");
+                throw new Exception(InterfaceConsole.ErrorInPathOfFile1);
             }
             if (!Path.Exists(file.DirectoryName))
             {
-                throw new Exception("ErrorInPathOfFile_4");
+                throw new Exception(InterfaceConsole.ErrorInPathOfFile2);
             }
             if (!file.Exists)
             {
@@ -53,14 +53,14 @@ public class Validator
             }
             else
             {
-                InterfaceConsole.WriterMessages("ThirdQuestion");
+                InterfaceConsole.WriteMessages(InterfaceConsole.ThirdQuestion);
                 InputData.OverwritingFile(file);
             }
             return true;
         }
         catch(Exception e)
         {
-            InterfaceConsole.WriterMessages(e.Message);
+            InterfaceConsole.WriteMessages(e.Message);
             return false;
         }
     }

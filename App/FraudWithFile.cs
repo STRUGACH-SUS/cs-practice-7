@@ -8,9 +8,9 @@ public class FraudWithFile
     /// <summary>
     /// Очистка файла
     /// </summary>
-    async public static void Overwriting(FileInfo dest)
+    async public static void Overwrite(FileInfo dest)
     {
-        InterfaceConsole.WriterMessages("Overwriting");
+        InterfaceConsole.WriteMessages(InterfaceConsole.Overwrite);
         await File.WriteAllTextAsync(dest.FullName, string.Empty);
     }
     
@@ -19,7 +19,7 @@ public class FraudWithFile
     /// </summary>
     public static void Create(FileInfo file)
     {
-        InterfaceConsole.WriterMessages("Create");
+        InterfaceConsole.WriteMessages(InterfaceConsole.Create);
         File.Create(file.FullName).Close();
     } 
     
@@ -28,7 +28,7 @@ public class FraudWithFile
     /// </summary>
     public static void Delete(FileInfo file)
     {
-        InterfaceConsole.WriterMessages("Delete");
+        InterfaceConsole.WriteMessages(InterfaceConsole.Delete);
         File.Delete(file.FullName);
     } 
 }
